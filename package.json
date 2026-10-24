@@ -5,7 +5,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
-  "description": "PensionSaarthi \u2014 Pensions and Social Benefits.",
+  "description": "PensionSaarthi — Pensions and Social Benefits.",
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
     "vite": "^5.4.0"
@@ -18,5 +18,8 @@
     "preview": "vite preview"
   },
   "type": "module",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.61.1"
+  }
 }
