@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { saveProfile, loadProfile, clearProfile } from '../lib/storage'
+import { fetchBackendProfile, syncProfileToBackend, deleteBackendProfileData } from '../lib/backendSync'
 
 // My Profile — fill once, use everywhere.
 // Two ways to fill it, as requested:
@@ -95,10 +96,22 @@ function speak(text, lang, onEnd) {
   } catch { if (onEnd) onEnd() }
 }
 
-export default function Profile({ isFirstTime, onSaved, onSkip }) {
+export default function Profile({ isFirstTime, onSaved, onSkip, authUser }) {
+  // Google sign-in info (from the Supabase session in App.jsx, never from a
+  // new Supabase call here): user_metadata gives full_name / name, email,
+  // and avatar_url / picture. Only the name is used to pre-fill the form,
+  // and only when the form name is still empty — a saved or typed name is
+  // never overwritten. Nothing is auto-saved: the user reviews the form
+  // and presses Save Profile. The profile itself is still saved on this
+  // device (storage.js); backend profile sync is not built yet.
+  const googleName = authUser?.user_metadata?.full_name || authUser?.user_metadata?.name || ''
+  const googleEmail = authUser?.email || ''
+  const googleAvatar = authUser?.user_metadata?.avatar_url || authUser?.user_metadata?.picture || ''
+  const isGoogle = authUser?.app_metadata?.provider === 'google'
   const [form, setForm] = useState(() => loadProfile() || EMPTY)
   const [mode, setMode] = useState('manual')
   const [savedMsg, setSavedMsg] = useState('')
+  const [backendStatus, setBackendStatus] = useState('idle') // idle | synced | device
   const [voiceStep, setVoiceStep] = useState(-1)
   const [voiceTranscript, setVoiceTranscript] = useState('')
   const [voiceStatus, setVoiceStatus] = useState('')
@@ -106,6 +119,7 @@ export default function Profile({ isFirstTime, onSaved, onSkip }) {
     try { return localStorage.getItem('pensionsaarthi_voice_lang_v1') || 'en' } catch { return 'en' }
   })
   const formRef = useRef(form)
+  const googleFilledRef = useRef(false)
   const stepRef = useRef(-1)
   const recRef = useRef(null)
   const voiceLangRef = useRef(voiceLang)
@@ -113,16 +127,53 @@ export default function Profile({ isFirstTime, onSaved, onSkip }) {
   const qText = (step) => (voiceLangRef.current === 'hi' ? step.questionHi : step.questionEn)
 
   useEffect(() => { formRef.current = form }, [form])
+  useEffect(() => {
+    if (!authUser || !googleName || googleFilledRef.current) return
+    googleFilledRef.current = true
+    setForm((f) => (f.name ? f : { ...f, name: googleName }))
+  }, [authUser, googleName])
+  // Backend load: only when this device has NO saved profile yet (the new
+  // device / new login case). A saved device profile always wins on load,
+  // so backend data can never wipe a profile the user already saved here.
+  // The backend profile is merged with the local breadwinnerDeath value
+  // when the backend column does not exist yet (see backendSync).
+  useEffect(() => {
+    if (!authUser || loadProfile()) return undefined
+    let cancelled = false
+    fetchBackendProfile(authUser).then((res) => {
+      if (cancelled || !res) return
+      setForm((f) => ({
+        ...res.profile,
+        breadwinnerDeath: res.profile.breadwinnerDeath === undefined ? f.breadwinnerDeath : res.profile.breadwinnerDeath,
+      }))
+      setBackendStatus('synced')
+    })
+    return () => { cancelled = true }
+  }, [authUser])
   useEffect(() => () => { try { recRef.current && recRef.current.stop() } catch { /* ignore */ } try { window.speechSynthesis && window.speechSynthesis.cancel() } catch { /* ignore */ } }, [])
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
-  const doSave = () => {
+  const doSave = async () => {
     const cleaned = { ...form, age: Number(form.age) || 0, disabilityPercent: Number(form.disabilityPercent) || 0, monthlyIncome: Number(form.monthlyIncome) || 0 }
+    // Device save always happens first — it is the fallback if backend sync
+    // fails, so saving can never be blocked by a backend outage.
     saveProfile(cleaned)
     setForm(cleaned)
-    setSavedMsg('Profile saved. You will not need to fill these details again — they will be used automatically on the Find My Pension page.')
     if (onSaved) onSaved(cleaned)
+    if (!authUser) {
+      setBackendStatus('device')
+      setSavedMsg('Profile saved on this device. You will not need to fill these details again — they will be used automatically on the Find My Pension page.')
+      return
+    }
+    const res = await syncProfileToBackend(authUser, cleaned)
+    if (res.ok) {
+      setBackendStatus('synced')
+      setSavedMsg('Profile saved to your account too. You will not need to fill these details again — they will be used automatically on the Find My Pension page.')
+    } else {
+      setBackendStatus('device')
+      setSavedMsg('Profile saved on this device, but it could not sync to your account yet. It is still saved here and will work on the Find My Pension page.')
+    }
   }
 
   const listenForStep = (stepIdx) => {
@@ -189,6 +240,24 @@ export default function Profile({ isFirstTime, onSaved, onSkip }) {
         No Aadhaar number, bank password or OTP is asked for or stored.
       </p>
 
+      {authUser && (
+        <div className="card profile-auth-banner">
+          {googleAvatar && <img src={googleAvatar} alt="" className="profile-auth-avatar" referrerPolicy="no-referrer" />}
+          <div>
+            <div className="scheme-name">Signed in as {googleEmail || 'your account'}</div>
+            <p className="note" style={{ margin: 0 }}>
+              {isGoogle && googleName && !existing?.name
+                ? 'Your name was filled from your Google account — review it below and press Save Profile.'
+                : 'Profile details below are still saved on this device. Signing in keeps your session; profile sync to the backend is not built yet.'}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {authUser && backendStatus === 'synced' && (
+        <p className="note" style={{ color: '#137547', fontWeight: 600 }}>✓ Profile synced to your account — it will load on another device after you sign in there.</p>
+      )}
+
       {existing && !isFirstTime && (
         <div className="card">
           <div className="scheme-name">Saved profile</div>
@@ -196,7 +265,7 @@ export default function Profile({ isFirstTime, onSaved, onSkip }) {
             {existing.name || 'Unnamed'} · Age {existing.age} · {existing.state}
             {existing.updatedAt ? ` · Last updated ${new Date(existing.updatedAt).toLocaleDateString('en-IN')}` : ''}
           </p>
-          <button className="btn small ghost" onClick={() => { clearProfile(); setForm(EMPTY); setSavedMsg('Profile cleared. Fill the form again to save a new one.') }}>Delete saved profile</button>
+          <button className="btn small ghost" onClick={async () => { clearProfile(); setForm(EMPTY); setBackendStatus('device'); if (authUser) await deleteBackendProfileData(authUser); setSavedMsg(authUser ? 'Profile cleared from this device and your account. Fill the form again to save a new one.' : 'Profile cleared. Fill the form again to save a new one.') }}>Delete saved profile</button>
         </div>
       )}
 
