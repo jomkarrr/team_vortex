@@ -9,8 +9,10 @@ import Calculator from './pages/Calculator'
 import Reminders from './pages/Reminders'
 import HelpCentres from './pages/HelpCentres'
 import Profile from './pages/Profile'
+import Login from './pages/Login'
 import VoiceAssistant from './components/VoiceAssistant'
 import { loadProfile } from './lib/storage'
+import { supabase } from './services/supabaseClient'
 
 // Navigation is deliberately short: 5 core items only.
 // Everything else lives under "More Services" so the bar is never crowded
@@ -30,12 +32,36 @@ const MORE_TABS = [
 ]
 
 export default function App() {
-  // First visit, no saved profile yet -> the user starts at My Profile.
-  // Fill it once (by hand or by voice) and every other page reuses it.
-  // Skipping only lasts for this visit; a fresh visit asks again.
+  // Login gate (decided 2026-10-25): opening the link shows the Login
+  // page FIRST, with no navigation yet. After sign-in (or after choosing
+  // "Continue without signing in") the landing page (Home) opens and
+  // navigation starts. This gate is NOT a nav tab — CORE_TABS / MORE_TABS
+  // below are unchanged, in the same names and order.
+  // Skipping login lasts only for this visit; a fresh visit without a
+  // Supabase session shows Login again.
+  // After login the user lands on Home (not Profile first). Profile is
+  // still a tab the user can open; its fill-once logic is unchanged.
+  const [user, setUser] = useState(null)
+  const [showLogin, setShowLogin] = useState(true)
   const [savedProfile, setSavedProfile] = useState(() => loadProfile())
-  const [page, setPage] = useState(() => (loadProfile() ? 'home' : 'profile'))
+  const [page, setPage] = useState('home')
   const [skippedProfile, setSkippedProfile] = useState(false)
+  useEffect(() => {
+    if (!supabase) return undefined
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user) { setUser(data.session.user); setShowLogin(false) }
+    })
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) { setUser(session.user); setShowLogin(false); setPage('home'); window.scrollTo({ top: 0 }) }
+      else if (_event === 'SIGNED_OUT') { setUser(null); setShowLogin(true) }
+    })
+    return () => listener.subscription.unsubscribe()
+  }, [])
+  const signOut = async () => {
+    if (supabase) await supabase.auth.signOut()
+    setUser(null)
+    setShowLogin(true)
+  }
   const [voiceOpen, setVoiceOpen] = useState(false)
   const [moreOpen, setMoreOpen] = useState(false)
   const [fontScale, setFontScale] = useState(1)
@@ -49,6 +75,36 @@ export default function App() {
 
   const isFirstTime = !savedProfile && !skippedProfile
   const cycleFont = () => setFontScale((s) => (s >= 1.2 ? 1 : s + 0.1))
+
+  // Login gate: no nav, no landing page, no services yet — only Login.
+  if (showLogin) {
+    return (
+      <MotionConfig reducedMotion="user">
+        <div className="app" style={{ fontSize: `${16.5 * fontScale}px` }}>
+          <header className="header">
+            <div className="header-inner">
+              <div className="brand">
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                  <span className="logo-mark">P</span>
+                  <span>
+                    <span className="brand-name">Pension<span>Saarthi</span></span>
+                    <br /><span className="brand-tag">Pensions & Social Benefits</span>
+                  </span>
+                </div>
+              </div>
+              <div className="header-actions">
+                <button className="font-btn" onClick={cycleFont} title="Increase text size for easier reading">A+ Text Size</button>
+              </div>
+            </div>
+          </header>
+          <Login onSkip={() => { setShowLogin(false); setPage('home'); window.scrollTo({ top: 0 }) }} />
+          <footer className="footer">
+            <div className="footer-bottom">PensionSaarthi · Pensions & Social Benefits · Prototype — eligibility shown is "likely eligible"; final sanction is the government officer's decision.</div>
+          </footer>
+        </div>
+      </MotionConfig>
+    )
+  }
 
   return (
     <MotionConfig reducedMotion="user">
@@ -69,6 +125,11 @@ export default function App() {
             <button className={`voice-btn ${voiceOpen ? 'active' : ''}`} onClick={() => setVoiceOpen(!voiceOpen)}>
               🎙 Voice Assistant
             </button>
+            {user ? (
+              <button className="font-btn" onClick={signOut} title={`Signed in as ${user.email || ''}`}>Sign out</button>
+            ) : (
+              <button className="font-btn" onClick={() => setShowLogin(true)}>Sign in</button>
+            )}
           </div>
         </div>
       </header>

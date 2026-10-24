@@ -237,3 +237,19 @@ body{
   background-position: top;
   background-attachment: fixed;
 }
+
+/* ============================================================================
+   LOGIN GATE (added 2026-10-25 — entry page, shown before navigation)
+   Decided options only: Google OAuth + email magic link, no password field.
+   Uses only the existing navy/blue colours and Poppins font — no new
+   palette, font, or theme. Buttons keep the existing ~50px minimum height.
+   ========================================================================== */
+.login-wrap{max-width:620px}
+.login-card{text-align:left}
+.login-google{background:#fff;color:var(--ink);border:1.5px solid #BDBDBD;width:100%;display:flex;align-items:center;justify-content:center;gap:10px}
+.login-google:disabled{opacity:.6;cursor:default}
+.login-g{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;align-items:center;justify-content:center;font-weight:800;flex:none}
+.login-divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px;margin:22px 0}
+.login-divider:before,.login-divider:after{content:"";flex:1;height:1px;background:var(--border)}
+.login-notice{background:var(--blue-light);border:1px solid #D6E9F8;border-radius:10px;padding:16px;font-size:15px;line-height:1.6;margin-top:16px}
+.center{text-align:center}
