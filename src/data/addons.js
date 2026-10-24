@@ -11,7 +11,7 @@ export const HELP_CENTRES = [
 ]
 
 export const FAQS = [
-  { q: 'Is PensionSaarthi a government website?', a: 'No. It is a student prototype built for IMPACTX 2026. It guides you to the right scheme and explains the process, but the final decision and payment are always made by the government.' },
+  { q: 'Is PensionSaarthi a government website?', a: 'No. It is a student prototype. It guides you to the right scheme and explains the process, but the final decision and payment are always made by the government.' },
   { q: 'Why is the central amount different from what my neighbour receives?', a: 'Because the central share is only part of the payment. Your state adds a top-up. This app always shows the central and state amounts separately so the difference is clear.' },
   { q: 'Do I need to share my Aadhaar number or OTP here?', a: 'Never. This app does not ask for a full Aadhaar number, bank password or OTP. A family helper can use it with just basic details.' },
   { q: 'My pension stopped suddenly. What is the first thing to check?', a: 'Check the Life Certificate first — it is the most common reason. Then check NPCI mapping at your bank. The "Why Did My Pension Stop?" section walks through both in order.' },

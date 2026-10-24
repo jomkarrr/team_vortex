@@ -1,4 +1,4 @@
-// Real, researched scheme rules — IMPACTX 2026, Topic 20.
+// Real, researched scheme rules.
 // Amounts are the OFFICIAL central share unless a scheme is a state scheme.
 // Adding a new scheme = adding one object here. No code change needed.
 // Rules are declarative; src/lib/eligibility.js interprets them.

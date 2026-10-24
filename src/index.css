@@ -10,10 +10,6 @@
 body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16.5px;line-height:1.55}
 a{color:var(--blue)}
 .app{min-height:100vh;display:flex;flex-direction:column}
-/* Top government strip */
-.topbar{background:var(--navy);color:#cfe0ee;font-size:13px}
-.topbar-inner{max-width:1180px;margin:0 auto;padding:7px 20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.topbar-inner a{color:#fff;text-decoration:none}
 /* Header */
 .header{background:#fff;border-bottom:1px solid var(--border)}
 .header-inner{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -26,8 +22,7 @@ a{color:var(--blue)}
 .font-btn,.voice-btn{border:1.5px solid var(--border);background:#fff;border-radius:999px;padding:8px 13px;font-size:14px;font-weight:600;cursor:pointer;color:var(--navy)}
 .voice-btn{background:var(--accent);border-color:var(--accent);color:#fff}
 .voice-btn.active{background:var(--navy);border-color:var(--navy)}
-.backend-pill{font-size:12px;border:1px solid var(--border);background:var(--bg);padding:6px 10px;border-radius:999px;color:var(--muted)}
-/* Main nav — UMANG-style blue bar */
+/* Main nav — blue bar */
 .nav{background:var(--navy2);position:sticky;top:0;z-index:20}
 .nav-inner{max-width:1180px;margin:0 auto;padding:0 12px;display:flex;gap:4px;flex-wrap:wrap}
 .nav-btn{background:transparent;border:none;color:#d6e6f2;padding:13px 15px;font-size:15px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}

@@ -1,9 +1,17 @@
 # PensionSaarthi — Pension, Bina Bhatke
 
-**Team VORTEX · IMPACTX 2026 · Problem Statement 20: Pensions and Social Benefits**
+**Pensions and Social Benefits**
 
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
+
+## My Profile (fill once, use everywhere)
+
+On first visit the site opens at **My Profile** in the navbar. Fill it once — by hand, or by
+voice-guided setup (the assistant asks one question at a time and listens for the answer) —
+and the Find My Pension page reuses it automatically. It is saved only on the device
+(localStorage), can be edited or deleted anytime from My Profile, and never asks for
+Aadhaar, OTP or bank passwords. Skipping on first visit only skips for that visit.
 
 ## UI v2 (professional, English, UMANG-inspired)
 
@@ -81,4 +89,4 @@ design, API contract, and how this prototype plugs into a real UMANG/DBT status 
 - No full Aadhaar number is ever collected or stored (last 4 digits at most).
 
 ---
-Built for IMPACTX 2026 (Microsoft Student Chapter · IIAIC · CSI, VIT-AP).
+A student prototype for pensions and social benefits.

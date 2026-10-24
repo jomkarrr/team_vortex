@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { evaluateProfile } from '../lib/eligibility'
-import { saveProfile, loadProfile } from '../lib/storage'
+import { loadProfile } from '../lib/storage'
 import SchemeCard from '../components/SchemeCard'
 
 const EMPTY = {
@@ -9,13 +9,16 @@ const EMPTY = {
   receivingPension: false, breadwinnerDeath: false,
 }
 
-export default function Eligibility() {
-  const [form, setForm] = useState(() => loadProfile() || EMPTY)
+export default function Eligibility({ go }) {
+  const saved = loadProfile()
+  const [form, setForm] = useState(() => saved || EMPTY)
   const [results, setResults] = useState(null)
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
   const submit = () => {
-    saveProfile(form)
+    // Do NOT overwrite the saved profile from here: the profile is owned by
+    // My Profile. This page only reads it, so a saved profile is never lost
+    // by experimenting with the form.
     setResults(evaluateProfile(form))
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -42,7 +45,18 @@ export default function Eligibility() {
   return (
     <div>
       <h2 className="page-title">Find My Pension — 6 simple questions</h2>
-      <p className="hero-sub">Enter the details of the person the pension is for. You can change them later; your answers are saved on this device only.</p>
+      {saved ? (
+        <div className="card" style={{ borderColor: 'var(--accent)' }}>
+          <div className="scheme-name">Using your saved profile</div>
+          <p className="note">
+            {saved.name || 'Your profile'} · Age {saved.age} · {saved.state} — loaded from My Profile.
+            Press "Show My Pensions" below to check with these details, or edit them anytime in My Profile.
+          </p>
+          {go && <button className="btn small" onClick={() => go('profile')}>Edit My Profile →</button>}
+        </div>
+      ) : (
+        <p className="hero-sub">No profile saved yet. Fill the form below, or set up My Profile once from the navbar and never fill it again.</p>
+      )}
       <div className="card form-card">
         <label>Full name<input value={form.name} onChange={(e) => set('name', e.target.value)} placeholder="Example: Ramulamma" /></label>
         <label>Age (years)<input type="number" min="0" max="120" value={form.age} onChange={(e) => set('age', Number(e.target.value))} /></label>

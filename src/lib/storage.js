@@ -1,15 +1,20 @@
 // Offline-first local storage: profiles + document checklists live on the
-// device so the app (and the hackathon demo) works without internet.
+// device so the app (and the demo) works without internet.
 // When Supabase env vars are set, services/supabaseClient.js can sync these.
+// A profile is filled ONCE and reused everywhere — the user never re-enters
+// the same details on the Eligibility page.
 
 const PROFILE_KEY = 'pensionsaarthi_profile_v1'
 const CHECKLIST_KEY = 'pensionsaarthi_checklists_v1'
 
 export function saveProfile(profile) {
-  try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)) } catch { /* private mode */ }
+  try { localStorage.setItem(PROFILE_KEY, JSON.stringify({ ...profile, updatedAt: new Date().toISOString() })) } catch { /* private mode */ }
 }
 export function loadProfile() {
   try { return JSON.parse(localStorage.getItem(PROFILE_KEY)) } catch { return null }
+}
+export function clearProfile() {
+  try { localStorage.removeItem(PROFILE_KEY) } catch { /* ignore */ }
 }
 export function getChecklist(schemeId) {
   try {

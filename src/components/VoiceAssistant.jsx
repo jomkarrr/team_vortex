@@ -7,6 +7,7 @@ import React, { useRef, useState } from 'react'
 // - Never asks for Aadhaar, OTP or passwords. It only navigates and explains.
 
 const COMMANDS = [
+  { label: 'My profile', say: 'Opening My Profile. Fill your details once, by voice or by hand, and you will never need to fill them again.', page: 'profile' },
   { label: 'Find my pension', say: 'Opening the Pension Finder. Answer six simple questions to see which pensions you qualify for, and why.', page: 'eligibility' },
   { label: 'Track my pension status', say: 'Opening the Status Tracker. Choose a case to see where your pension has reached, and why it is stuck if it is.', page: 'status' },
   { label: 'My pension stopped', say: 'Opening Why Did My Pension Stop. First check your Life Certificate, then your bank NPCI mapping. I will walk you through each step.', page: 'help' },
@@ -44,14 +45,16 @@ export default function VoiceAssistant({ go, open, setOpen }) {
   const handleVoice = (text) => {
     const t = text.toLowerCase()
     setTranscript(text)
+    const byPage = (page) => COMMANDS.find((c) => c.page === page)
     let cmd = null
-    if (t.includes('stop') || t.includes('not received') || t.includes('not coming') || t.includes('band')) cmd = COMMANDS[2]
-    else if (t.includes('status') || t.includes('track') || t.includes('where') && t.includes('pension')) cmd = COMMANDS[1]
-    else if (t.includes('find') || t.includes('eligible') || t.includes('qualify') || t.includes('which pension')) cmd = COMMANDS[0]
-    else if (t.includes('calculator') || t.includes('how much') || t.includes('pay')) cmd = COMMANDS[4]
-    else if (t.includes('life certificate') || t.includes('reminder') || t.includes('jeevan')) cmd = COMMANDS[5]
-    else if (t.includes('help') || t.includes('centre') || t.includes('center') || t.includes('office')) cmd = COMMANDS[6]
-    else if (t.includes('scheme')) cmd = COMMANDS[3]
+    if (t.includes('profile') || t.includes('my details') || t.includes('fill my details')) cmd = byPage('profile')
+    else if (t.includes('stop') || t.includes('not received') || t.includes('not coming') || t.includes('band')) cmd = byPage('help')
+    else if (t.includes('status') || t.includes('track') || t.includes('where') && t.includes('pension')) cmd = byPage('status')
+    else if (t.includes('find') || t.includes('eligible') || t.includes('qualify') || t.includes('which pension')) cmd = byPage('eligibility')
+    else if (t.includes('calculator') || t.includes('how much') || t.includes('pay')) cmd = byPage('calculator')
+    else if (t.includes('life certificate') || t.includes('reminder') || t.includes('jeevan')) cmd = byPage('reminders')
+    else if (t.includes('help') || t.includes('centre') || t.includes('center') || t.includes('office')) cmd = byPage('helpcentres')
+    else if (t.includes('scheme')) cmd = byPage('schemes')
     else if (t.includes('home')) { setLastAnswer('Going back to the home page.'); speak('Going back to the home page.'); if (go) go('home'); return }
     if (cmd) runCommand(cmd)
     else {

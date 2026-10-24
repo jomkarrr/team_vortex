@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 const SERVICES = [
+  { id: 'profile', icon: '00', title: 'My Profile', desc: 'Fill your details once — by hand or by voice. Every other page then uses this profile, so you never fill the same details again.', tag: 'Start here' },
   { id: 'eligibility', icon: '01', title: 'Find My Pension', desc: 'Answer 6 simple questions. See every pension you qualify for, with the exact reason and the documents needed.', tag: 'Most used' },
   { id: 'status', icon: '02', title: 'Track Pension Status', desc: 'One clean timeline from Applied to Credited — and if it is stuck, the reason and the fix.', tag: 'Live timeline' },
   { id: 'help', icon: '03', title: 'Why Did My Pension Stop?', desc: 'Diagnose the real reasons pensions stop: Life Certificate, NPCI mapping, name mismatch, family pension.', tag: 'Troubleshooter' },
@@ -28,7 +29,7 @@ export default function Home({ go, onVoice }) {
   return (
     <div>
       <div className="hero">
-        <div className="hero-eyebrow">IMPACTX 2026 · Problem 20 · Pensions & Social Benefits</div>
+        <div className="hero-eyebrow">Pensions & Social Benefits</div>
         <h1>Your pension, without the runaround.</h1>
         <p>
           Find the pension you actually qualify for, track where your money has reached,
@@ -85,7 +86,7 @@ export default function Home({ go, onVoice }) {
       </div>
 
       <p className="disclaimer">
-        Note: This is a student prototype for IMPACTX 2026, not a government website. Eligibility shown is "likely eligible" —
+        Note: This is a prototype, not a government website. Eligibility shown is "likely eligible" —
         the final decision is always the government officer's. Where an amount is labelled "central share", your state adds a top-up on top of it.
         For official information, visit nsap.nic.in and jeevanpramaan.gov.in, or your Gram / Ward Sachivalayam.
       </p>
