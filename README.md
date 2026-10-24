@@ -5,15 +5,22 @@
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
 
-## Deploy (GitHub Pages)
+## Deploy (Vercel)
 
-Live site (once Pages is enabled for the repo): https://jomkarrr.github.io/team_vortex/
+Deploy target is Vercel, not GitHub Pages.
 
-Deploy is automatic: `.github/workflows/deploy.yml` builds on every push to `main`
-and deploys with GitHub Pages (Actions). Locally: `npm install && npm run build`
-— `vite.config.js` sets `base: '/team_vortex/'` because a project Pages site is
-served under that path, not the domain root. A `gh-pages` branch with the built
-site is also kept as a fallback Pages source.
+1. Fix already done in this repo: `vite.config.js` sets `base: '/'` because
+   Vercel serves the site from the domain root. (Do NOT set it back to
+   `/team_vortex/` — that was for GitHub Pages and breaks Vercel with a
+   blank page.)
+2. On vercel.com, log in with GitHub, Add New > Project, import
+   `jomkarrr/team_vortex`.
+3. Settings: Framework Vite, Build Command `npm run build`, Output Directory
+   `dist`, Install Command `npm install`. No environment variables are
+   required — without Supabase vars the app runs in demo mode with
+   localStorage profiles (see `.env.example` for the optional backend).
+4. Click Deploy. Every later push to `main` redeploys automatically.
+   The app uses in-page navigation only, so no URL rewrites are needed.
 
 ## UMANG audit theme + animations (latest)
 
