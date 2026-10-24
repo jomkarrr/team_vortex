@@ -94,23 +94,31 @@ export default function Login({ onSkip }) {
 
         <div className="login-divider"><span>or continue with email</span></div>
 
-        <div className="form-card">
-          <label>
-            Email address
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@gmail.com"
-              autoComplete="email"
-              inputMode="email"
-            />
-          </label>
+        <div className="login-email-box">
+          <p className="login-email-title">✉️ Continue with email</p>
+          <p className="login-email-sub">No password needed. We will send you a one-time login link.</p>
+          <div className="form-card">
+            <label htmlFor="login-email">
+              Email address
+              <span className="login-email-inputwrap">
+                <span aria-hidden="true" className="login-email-icon">✉</span>
+                <input
+                  id="login-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@gmail.com"
+                  autoComplete="email"
+                  inputMode="email"
+                />
+              </span>
+            </label>
+          </div>
+          <button className="btn primary big login-email-btn" type="button" onClick={sendLink} disabled={status === 'sending'}>
+            {status === 'sending' ? 'Sending…' : 'Send login link →'}
+          </button>
+          <p className="note login-email-note">Open that email and tap the link to sign in. The link works once, and you do not need a password.</p>
         </div>
-        <button className="btn primary big" type="button" onClick={sendLink} disabled={status === 'sending'}>
-          {status === 'sending' ? 'Sending…' : 'Send login link'}
-        </button>
-        <p className="note">We will send a link to your email. Open that email and tap the link to sign in. The link works once, and you do not need a password.</p>
 
         {message && (
           <div className={status === 'error' ? 'status-banner bad' : 'status-banner'} role="status">
