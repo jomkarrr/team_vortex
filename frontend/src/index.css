@@ -90,7 +90,7 @@ a{color:var(--blue)}
 .doc-row{display:flex;gap:10px;align-items:center;padding:8px 0;font-size:16px;cursor:pointer}
 .doc-row input{width:22px;height:22px;accent-color:var(--blue)}
 .form-card label{display:block;font-weight:600;margin:14px 0;font-size:16px}
-.form-card input[type="text"],.form-card input:not([type]),.form-card input[type="number"],.form-card input[type="date"],.form-card select,.form-card textarea{display:block;width:100%;margin-top:6px;font-size:16px;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);min-height:50px;font-family:inherit}
+.form-card input[type="text"],.form-card input[type="email"],.form-card input:not([type]),.form-card input[type="number"],.form-card input[type="date"],.form-card select,.form-card textarea{display:block;width:100%;margin-top:6px;font-size:16px;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);min-height:50px;font-family:inherit}
 .form-card label.check{display:flex;gap:10px;align-items:center;font-weight:500;cursor:pointer}
 .form-card label.check input{width:22px;height:22px;accent-color:var(--blue);flex:none}
 .status-banner{margin:14px 0;padding:12px 16px;border-radius:12px;background:#dcfce7;font-size:17px}
@@ -253,3 +253,20 @@ body{
 .login-divider:before,.login-divider:after{content:"";flex:1;height:1px;background:var(--border)}
 .login-notice{background:var(--blue-light);border:1px solid #D6E9F8;border-radius:10px;padding:16px;font-size:15px;line-height:1.6;margin-top:16px}
 .center{text-align:center}
+
+/* EMAIL SECTION DESIGN (added 2026-10-25 — login email box only)
+   Existing navy/blue palette + Poppins only, no new colours/fonts/deps.
+   Email input is full-width (PR #4 fix included here) inside a pale-blue
+   panel with a navy top accent, envelope icon, and a visible focus ring.
+   Button stays >=48px (56px here). No logic, nav, or text meaning changed. */
+.login-email-box{background:#EAF2F9;border:1.5px solid #D6E9F8;border-top:4px solid #1E3A8A;border-radius:14px;padding:18px;margin-top:4px}
+.login-email-title{font-size:18px;font-weight:800;color:#1E3A8A;margin:0 0 4px}
+.login-email-sub{font-size:15px;color:#5A5A5A;margin:0 0 14px;line-height:1.5}
+.login-email-box .form-card{margin:0}
+.login-email-inputwrap{display:flex;align-items:center;background:#fff;border:2px solid #1B75BC;border-radius:12px;margin-top:8px;overflow:hidden}
+.login-email-inputwrap:focus-within{border-color:#1E3A8A;box-shadow:0 0 0 3px rgba(30,58,138,.18)}
+.login-email-icon{font-size:20px;color:#1B75BC;padding:0 4px 0 14px;flex:none}
+.login-email-box .form-card input[type="email"]{border:none;margin-top:0;padding:14px 14px 14px 8px;min-height:56px;font-size:17px;flex:1;min-width:0}
+.login-email-box .form-card input[type="email"]:focus{outline:none;box-shadow:none}
+.login-email-btn{min-height:56px;font-size:18px;margin-top:14px}
+.login-email-note{margin-top:10px}
