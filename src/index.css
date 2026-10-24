@@ -1,0 +1,89 @@
+/* PensionSaarthi — elderly-first design: big text, big tap targets, high contrast,
+   one clear action per card. No tiny grey text anywhere a pensioner must read. */
+:root {
+  --bg: #fff8ef;
+  --surface: #ffffff;
+  --ink: #1c1917;
+  --muted: #57534e;
+  --accent: #b45309;
+  --accent-ink: #ffffff;
+  --ok: #15803d;
+  --warn: #b45309;
+  --no: #b91c1c;
+  --border: #e7ddd0;
+  --radius: 16px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); font-size: 18px; line-height: 1.55; }
+.app { max-width: 860px; margin: 0 auto; padding: 0 16px 40px; }
+.header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 18px 0 10px; }
+.brand { cursor: pointer; display: flex; flex-direction: column; }
+.brand-name { font-size: 28px; font-weight: 800; color: var(--accent); }
+.brand-tag { font-size: 13px; color: var(--muted); }
+.backend-pill { font-size: 12px; border: 1px solid var(--border); background: var(--surface); padding: 6px 10px; border-radius: 999px; color: var(--muted); }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; padding: 8px 0 18px; }
+.nav-btn { font-size: 16px; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--border); background: var(--surface); color: var(--ink); cursor: pointer; min-height: 48px; }
+.nav-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.hero { font-size: 38px; margin: 8px 0; }
+.hero-sub { font-size: 19px; color: var(--muted); max-width: 640px; }
+.page-title { font-size: 30px; margin: 6px 0 8px; }
+.home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
+@media (max-width: 640px) { .home-grid { grid-template-columns: 1fr; } .hero { font-size: 30px; } }
+.big-card { text-align: left; background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; font-size: 17px; color: var(--ink); min-height: 120px; }
+.big-card:hover { border-color: var(--accent); }
+.big-card.accent { border-color: var(--accent); background: #fdf3e3; }
+.big-card-title { font-size: 21px; font-weight: 800; }
+.card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; margin: 14px 0; }
+.card-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.scheme-name { font-size: 21px; font-weight: 800; }
+.scheme-meta { font-size: 14px; color: var(--muted); margin-top: 2px; }
+.badge { font-size: 14px; font-weight: 700; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.badge.ok { background: #dcfce7; color: var(--ok); }
+.badge.warn { background: #fef3c7; color: var(--warn); }
+.badge.no { background: #fee2e2; color: var(--no); }
+.badge.info { background: #e0e7ff; color: #3730a3; }
+.amount { font-size: 34px; font-weight: 800; margin: 10px 0 2px; }
+.amount .per { font-size: 16px; font-weight: 500; color: var(--muted); }
+.note { font-size: 16px; color: var(--muted); }
+.note.dim { font-size: 13px; }
+.reasons { list-style: none; padding: 0; margin: 10px 0; font-size: 16px; }
+.reasons li { padding: 3px 0; }
+.ok-list { color: var(--ok); }
+.no-list { color: var(--no); }
+.btn { font-size: 17px; font-weight: 700; padding: 12px 22px; border-radius: 12px; border: 1.5px solid var(--accent); cursor: pointer; min-height: 52px; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.primary.big { width: 100%; font-size: 19px; margin-top: 8px; }
+.btn.ghost, .btn.small.ghost { background: transparent; color: var(--accent); }
+.btn.small { font-size: 15px; padding: 8px 14px; min-height: 44px; margin-top: 10px; }
+.docs { border-top: 1px dashed var(--border); margin-top: 14px; padding-top: 12px; }
+.docs-title { font-weight: 700; margin-bottom: 8px; }
+.doc-row { display: flex; gap: 10px; align-items: center; padding: 8px 0; font-size: 17px; cursor: pointer; }
+.doc-row input { width: 24px; height: 24px; accent-color: var(--accent); }
+.form-card label { display: block; font-weight: 600; margin: 14px 0; font-size: 17px; }
+.form-card input[type="text"], .form-card input:not([type]), .form-card input[type="number"], .form-card select {
+  display: block; width: 100%; margin-top: 6px; font-size: 18px; padding: 12px; border: 1.5px solid var(--border);
+  border-radius: 10px; background: #fff; color: var(--ink); min-height: 52px;
+}
+.form-card label.check { display: flex; gap: 10px; align-items: center; font-weight: 500; cursor: pointer; }
+.form-card label.check input { width: 24px; height: 24px; accent-color: var(--accent); flex: none; }
+.status-banner { margin: 14px 0; padding: 12px 16px; border-radius: 12px; background: #dcfce7; font-size: 18px; }
+.status-banner.bad { background: #fee2e2; }
+.timeline { margin-top: 10px; }
+.t-row { display: flex; gap: 12px; padding: 10px 0; }
+.t-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--ok); flex: none; margin-top: 5px; }
+.t-row.fail .t-dot { background: var(--no); }
+.t-row.pending .t-dot { background: #d6d3d1; }
+.t-status { font-weight: 700; }
+.t-date { color: var(--muted); font-weight: 500; font-size: 14px; }
+.t-note { color: var(--muted); font-size: 16px; }
+.persona-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+.persona { text-align: left; background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: var(--ink); }
+.persona strong { font-size: 18px; }
+.persona.active { border-color: var(--accent); background: #fdf3e3; }
+.issue-head { width: 100%; display: flex; justify-content: space-between; background: none; border: none; font-size: 20px; font-weight: 800; color: var(--ink); cursor: pointer; padding: 0; text-align: left; }
+.steps { font-size: 17px; padding-left: 22px; }
+.steps li { padding: 4px 0; }
+.warning { background: #fef3c7; border-radius: 10px; padding: 10px 14px; font-size: 16px; }
+.helper-card { border-color: var(--accent); }
+.disclaimer { font-size: 14px; color: var(--muted); margin-top: 18px; }
+.footer { margin-top: 34px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px; }
