@@ -124,3 +124,94 @@ a{color:var(--blue)}
 .calc-result b{font-size:28px;color:var(--navy)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:760px){.two-col{grid-template-columns:1fr}}
+
+/* ============================================================================
+   UMANG AUDIT THEME (applied 2026-10-24)
+   Source: read-only visual audit of web.umang.gov.in/landing/
+   IMPORTANT — what is verified vs approximated:
+   - Font name could NOT be verified (no DevTools/view-source access in the
+     audit browser). The audit found a single clean, slightly rounded
+     sans-serif, geometric-feeling headings, similar in style to Poppins /
+     Nunito. So Poppins is used here as the CLOSEST match, with system
+     sans-serif fallback — it is not claimed to be UMANG's exact font file.
+   - Hex values are the audit's closest visual approximations (≈), not
+     exact UMANG design tokens: top bar ≈ #1E3A8A, primary ≈ #1F3B8B,
+     link/active blue ≈ #1B75BC, benefits blue ≈ #1565A8,
+     footer pale blue ≈ #EAF2F9, headings ≈ #1A1A1A, body ≈ #5A5A5A,
+     card border ≈ #E5E5E5, scroll-to-top teal ≈ #29B6C0.
+   - Nav underline slide direction/duration were also unverified on UMANG
+     (appeared ≤ ~0.3s). The left-to-right slide below is the transition
+     the user asked for, implemented at 0.3s.
+   - FLIP CARDS: the audit found NO flip (3D rotate) behaviour on UMANG.
+     The flip below is OUR addition for service cards, not a UMANG feature,
+     and clicking a card always opens its page — flipping is only a preview.
+   ========================================================================== */
+:root{
+  --navy:#1E3A8A; --navy2:#1F3B8B; --blue:#1B75BC; --blue-light:#EAF2F9;
+  --accent:#1B75BC; --accent-dark:#1565A8; --bg:#ffffff; --surface:#ffffff;
+  --ink:#1A1A1A; --muted:#5A5A5A; --border:#E5E5E5; --teal:#29B6C0;
+}
+body{font-family:'Poppins',Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+/* UMANG pattern: NO separate coloured nav bar — nav sits on the white,
+   sticky header, dark text, blue underline. */
+.header{background:#fff;box-shadow:0 2px 12px rgba(30,58,138,.08)}
+.brand-name{color:var(--navy)} .brand-name span{color:var(--blue)}
+.nav{background:#fff;position:sticky;top:0;z-index:39;border-bottom:1px solid var(--border)}
+.nav-btn{position:relative;color:#212121;padding:13px 15px}
+.nav-btn::after{content:'';position:absolute;left:15px;right:15px;bottom:0;height:3px;background:var(--blue);border-radius:3px 3px 0 0;transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.nav-btn:hover{color:var(--blue)}
+.nav-btn:hover::after{transform:scaleX(1)}
+.nav-btn.active{color:var(--blue);border-bottom-color:transparent}
+.nav-btn.active::after{transform:scaleX(1)}
+/* Primary buttons: UMANG-style navy, ~8px radius, darken on hover */
+.btn.primary{background:var(--navy2);border-color:var(--navy2);border-radius:8px}
+.btn.primary:hover{background:#16307a}
+.btn{border-radius:8px}
+.hero-search button{background:var(--navy2);border-radius:8px}
+.hero-search button:hover{background:#16307a}
+.hero{background:linear-gradient(120deg,#1E3A8A 0%,#1565A8 55%,#1B75BC 100%)}
+/* Stats band: UMANG pattern — hairline dividers, blue label, bold numbers */
+.stats{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0}
+.stat{box-shadow:none;border:none;border-left:1px solid var(--border);border-radius:0}
+.stat:first-child{border-left:none}
+.stat b{color:var(--navy)}
+/* Service cards: UMANG service-card hover = title turns blue.
+   Plus a gentle lift (our enhancement) and a blue-fill variant. */
+.service-card{border-radius:12px;transition:transform .3s ease,box-shadow .3s ease,background .3s ease,color .3s ease}
+.service-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(30,58,138,.14)}
+.service-card:hover h3{color:var(--blue)}
+.service-card.fill-hover:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+.service-card.fill-hover:hover h3,.service-card.fill-hover:hover p,.service-card.fill-hover:hover .go{color:#fff}
+/* Flip cards (OUR addition — not on UMANG): front shows the service,
+   back shows the tag + open action. Clicking anywhere opens the page. */
+.flip-card{perspective:1000px;background:transparent;border:none;padding:0}
+.flip-inner{position:relative;width:100%;height:100%;min-height:260px;transform-style:preserve-3d;transition:transform .6s ease}
+.flip-card:hover .flip-inner,.flip-card:focus-within .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;text-align:left}
+.flip-back{transform:rotateY(180deg);background:var(--accent-dark);color:#fff;border-color:var(--accent-dark);justify-content:center}
+.flip-back h3,.flip-back p,.flip-back .go{color:#fff}
+@media(max-width:580px){.flip-inner{min-height:280px}}
+/* Hero carousel (UMANG pattern: ~5s auto-advance, dots + chevrons) */
+.hero-carousel{position:relative}
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:40px;height:40px;font-size:20px;color:var(--blue);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.carousel-arrow.prev{left:4px} .carousel-arrow.next{right:4px}
+.carousel-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.carousel-dot{width:10px;height:10px;border-radius:50%;border:none;background:#bcd2e6;cursor:pointer;padding:0}
+.carousel-dot.active{background:var(--blue);width:26px;border-radius:999px}
+/* Help band (UMANG pattern: large rounded white panel with border) */
+.help-band{border-radius:20px;border:1px solid var(--border);padding:28px}
+/* Footer: UMANG pale blue, dark text (was navy) */
+.footer{background:var(--blue-light);color:#333}
+.footer-inner h4{color:var(--navy)} .footer-inner p,.footer-inner button{color:#333}
+.footer-bottom{border-top:1px solid #d6e2ee;color:#5A5A5A}
+/* Scroll-to-top (UMANG pattern: bottom-left, white circle, teal arrow) */
+.scroll-top-btn{position:fixed;left:20px;bottom:20px;z-index:50;width:52px;height:52px;border-radius:50%;background:#fff;border:2px solid #1e4569;color:var(--teal);font-size:22px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+/* Voice fab hover pill (UMANG chatbot pattern: pill slides out on hover) */
+.voice-fab-wrap{position:fixed;right:20px;bottom:20px;z-index:50;display:flex;align-items:center;gap:10px}
+.voice-fab-wrap .voice-fab{position:static}
+.voice-pill{background:#D6E9F8;color:var(--navy);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;opacity:0;transform:translateX(8px);transition:opacity .3s ease,transform .3s ease;pointer-events:none;white-space:nowrap}
+.voice-fab-wrap:hover .voice-pill{opacity:1;transform:translateX(0)}
+/* Reduced motion: respect users who prefer it (elderly / accessibility) */
+@media(prefers-reduced-motion:reduce){
+  .nav-btn::after,.service-card,.flip-inner,.voice-pill{transition:none}
+}

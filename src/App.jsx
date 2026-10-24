@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 import Home from './pages/Home'
 import Eligibility from './pages/Eligibility'
 import Status from './pages/Status'
@@ -38,12 +39,19 @@ export default function App() {
   const [voiceOpen, setVoiceOpen] = useState(false)
   const [moreOpen, setMoreOpen] = useState(false)
   const [fontScale, setFontScale] = useState(1)
+  const [showTop, setShowTop] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 400)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   const go = (p) => { setPage(p); window.scrollTo({ top: 0 }) }
 
   const isFirstTime = !savedProfile && !skippedProfile
   const cycleFont = () => setFontScale((s) => (s >= 1.2 ? 1 : s + 0.1))
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="app" style={{ fontSize: `${16.5 * fontScale}px` }}>
       <header className="header">
         <div className="header-inner">
@@ -94,22 +102,36 @@ export default function App() {
       </nav>
 
       <main className="main">
-        {page === 'home' && <Home go={go} onVoice={() => setVoiceOpen(true)} />}
-        {page === 'eligibility' && <Eligibility go={go} />}
-        {page === 'status' && <Status go={go} />}
-        {page === 'help' && <Troubleshooter />}
-        {page === 'schemes' && <Schemes />}
-        {page === 'calculator' && <Calculator />}
-        {page === 'reminders' && <Reminders />}
-        {page === 'helpcentres' && <HelpCentres />}
-        {page === 'profile' && (
-          <Profile
-            isFirstTime={isFirstTime}
-            onSaved={(p) => { setSavedProfile(p); if (isFirstTime) go('home') }}
-            onSkip={isFirstTime ? () => { setSkippedProfile(true); go('home') } : null}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={page}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            {page === 'home' && <Home go={go} onVoice={() => setVoiceOpen(true)} />}
+            {page === 'eligibility' && <Eligibility go={go} />}
+            {page === 'status' && <Status go={go} />}
+            {page === 'help' && <Troubleshooter />}
+            {page === 'schemes' && <Schemes />}
+            {page === 'calculator' && <Calculator />}
+            {page === 'reminders' && <Reminders />}
+            {page === 'helpcentres' && <HelpCentres />}
+            {page === 'profile' && (
+              <Profile
+                isFirstTime={isFirstTime}
+                onSaved={(p) => { setSavedProfile(p); if (isFirstTime) go('home') }}
+                onSkip={isFirstTime ? () => { setSkippedProfile(true); go('home') } : null}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
+
+      {showTop && (
+        <button className="scroll-top-btn" title="Back to top" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>↑</button>
+      )}
 
       <VoiceAssistant go={go} open={voiceOpen} setOpen={setVoiceOpen} onMore={() => setMoreOpen(true)} onFontSize={cycleFont} />
 
@@ -131,5 +153,6 @@ export default function App() {
         <div className="footer-bottom">PensionSaarthi · Pensions & Social Benefits · Prototype — eligibility shown is "likely eligible"; final sanction is the government officer's decision.</div>
       </footer>
     </div>
+    </MotionConfig>
   )
 }

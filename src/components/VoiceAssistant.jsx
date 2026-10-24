@@ -86,9 +86,12 @@ export default function VoiceAssistant({ go, open, setOpen, onMore, onFontSize }
 
   if (!open) {
     return (
-      <button className="voice-fab" title="Voice Assistant for Citizens" aria-label="Open Voice Assistant" onClick={() => setOpen(true)}>
-        🎙
-      </button>
+      <div className="voice-fab-wrap">
+        <span className="voice-pill">Ask PensionSaarthi</span>
+        <button className="voice-fab" title="Voice Assistant for Citizens" aria-label="Open Voice Assistant" onClick={() => setOpen(true)}>
+          🎙
+        </button>
+      </div>
     )
   }
 

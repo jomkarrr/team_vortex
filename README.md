@@ -5,6 +5,36 @@
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
 
+## UMANG audit theme + animations (latest)
+
+Read-only audit of web.umang.gov.in/landing/ (v-21.2.38): no sign-in/submission/download.
+Findings applied, with limits stated honestly in `src/index.css`:
+- **Font:** exact UMANG font name could NOT be verified (no DevTools access in audit).
+  Audit found a single clean, slightly rounded sans, geometric headings, similar in
+  style to Poppins/Nunito — so **Poppins** is used as the closest match, with
+  system-sans fallback. Not claimed as UMANG's exact font file.
+- **Colours (≈ approximations, not exact tokens):** deep navy ≈ #1E3A8A, primary
+  ≈ #1F3B8B, link/active blue ≈ #1B75BC, benefits blue ≈ #1565A8, footer pale
+  blue ≈ #EAF2F9, headings ≈ #1A1A1A, body ≈ #5A5A5A, card border ≈ #E5E5E5,
+  scroll-to-top teal ≈ #29B6C0. Saffron accent replaced by UMANG blue.
+- **Header/nav (UMANG pattern):** no separate coloured nav bar — white sticky
+  nav, dark text, blue active underline. Nav hover now has a **left-to-right
+  sliding underline (0.3s)**; active item keeps it permanently. Slide direction
+  on UMANG itself was unverified (appeared ≤0.3s), the requested direction is
+  what is implemented.
+- **Cards:** service-card hover turns the title blue (UMANG pattern) plus a
+  gentle lift; **flip cards are OUR addition, not UMANG's** (audit found NO
+  flip behaviour on UMANG) — Home service cards flip on hover/focus to preview
+  the back, clicking always opens the page.
+- **Hero carousel (UMANG pattern):** 3 slides, ~5s auto-advance, dots + chevrons.
+- **Framer Motion (installed, v14):** page fade/slide transitions, hero slide
+  transitions, service-card entrance stagger; `MotionConfig reducedMotion="user"`
+  and CSS `prefers-reduced-motion` respect accessibility settings.
+- **Other UMANG patterns:** stats band with hairline dividers, pale-blue footer,
+  help band, scroll-to-top button (bottom-left, teal arrow), voice-fab hover
+  pill ("Ask PensionSaarthi", like UMANG's "Ask UMANG" pill — own wording only).
+  No UMANG logos, text, helpline numbers or content were copied.
+
 ## Voice assistant training (latest)
 
 The assistant is trained on **every navigation button by name** in `src/lib/voiceIntents.js`:
