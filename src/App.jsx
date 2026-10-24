@@ -111,7 +111,7 @@ export default function App() {
         )}
       </main>
 
-      <VoiceAssistant go={go} open={voiceOpen} setOpen={setVoiceOpen} />
+      <VoiceAssistant go={go} open={voiceOpen} setOpen={setVoiceOpen} onMore={() => setMoreOpen(true)} onFontSize={cycleFont} />
 
       <footer className="footer">
         <div className="footer-inner">

@@ -5,6 +5,18 @@
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
 
+## Voice assistant training (latest)
+
+The assistant is trained on **every navigation button by name** in `src/lib/voiceIntents.js`:
+Home, My Profile, Find My Pension, Track Status, Why Did My Pension Stop?, All Schemes,
+Calculator, Reminders, Help & Grievance, plus More Services and Bigger Text — each with
+English, Roman Hindi and Devanagari Hindi aliases. Matching is scored, longest phrase
+first ("where to get help" -> Help & Grievance, not Track Status; "my pension stopped"
+-> troubleshooter, not Help Centres), with a specific-keyword fallback; a bare generic
+word like "pension" alone asks for clarification instead of guessing wrong. The panel
+shows "Understood: <button name>" before opening, so a misheard order is visible at once.
+Tested against 37 English/Hindi utterances covering every button (all pass).
+
 ## My Profile, bilingual voice, and per-user status (latest)
 
 - **Voice Assistant is bilingual (English + Hindi):** pick a language in the voice panel and both listening and spoken answers switch to it (en-IN / hi-IN), including Hindi keywords in Roman and Devanagari. Profile voice setup is bilingual too, including Hindi number words.
