@@ -95,7 +95,18 @@ function speak(text, lang, onEnd) {
   } catch { if (onEnd) onEnd() }
 }
 
-export default function Profile({ isFirstTime, onSaved, onSkip }) {
+export default function Profile({ isFirstTime, onSaved, onSkip, authUser }) {
+  // Google sign-in info (from the Supabase session in App.jsx, never from a
+  // new Supabase call here): user_metadata gives full_name / name, email,
+  // and avatar_url / picture. Only the name is used to pre-fill the form,
+  // and only when the form name is still empty — a saved or typed name is
+  // never overwritten. Nothing is auto-saved: the user reviews the form
+  // and presses Save Profile. The profile itself is still saved on this
+  // device (storage.js); backend profile sync is not built yet.
+  const googleName = authUser?.user_metadata?.full_name || authUser?.user_metadata?.name || ''
+  const googleEmail = authUser?.email || ''
+  const googleAvatar = authUser?.user_metadata?.avatar_url || authUser?.user_metadata?.picture || ''
+  const isGoogle = authUser?.app_metadata?.provider === 'google'
   const [form, setForm] = useState(() => loadProfile() || EMPTY)
   const [mode, setMode] = useState('manual')
   const [savedMsg, setSavedMsg] = useState('')
@@ -106,6 +117,7 @@ export default function Profile({ isFirstTime, onSaved, onSkip }) {
     try { return localStorage.getItem('pensionsaarthi_voice_lang_v1') || 'en' } catch { return 'en' }
   })
   const formRef = useRef(form)
+  const googleFilledRef = useRef(false)
   const stepRef = useRef(-1)
   const recRef = useRef(null)
   const voiceLangRef = useRef(voiceLang)
@@ -113,6 +125,11 @@ export default function Profile({ isFirstTime, onSaved, onSkip }) {
   const qText = (step) => (voiceLangRef.current === 'hi' ? step.questionHi : step.questionEn)
 
   useEffect(() => { formRef.current = form }, [form])
+  useEffect(() => {
+    if (!authUser || !googleName || googleFilledRef.current) return
+    googleFilledRef.current = true
+    setForm((f) => (f.name ? f : { ...f, name: googleName }))
+  }, [authUser, googleName])
   useEffect(() => () => { try { recRef.current && recRef.current.stop() } catch { /* ignore */ } try { window.speechSynthesis && window.speechSynthesis.cancel() } catch { /* ignore */ } }, [])
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
@@ -188,6 +205,20 @@ export default function Profile({ isFirstTime, onSaved, onSkip }) {
         you will never have to fill the same details again. You can edit it anytime from the navbar.
         No Aadhaar number, bank password or OTP is asked for or stored.
       </p>
+
+      {authUser && (
+        <div className="card profile-auth-banner">
+          {googleAvatar && <img src={googleAvatar} alt="" className="profile-auth-avatar" referrerPolicy="no-referrer" />}
+          <div>
+            <div className="scheme-name">Signed in as {googleEmail || 'your account'}</div>
+            <p className="note" style={{ margin: 0 }}>
+              {isGoogle && googleName && !existing?.name
+                ? 'Your name was filled from your Google account — review it below and press Save Profile.'
+                : 'Profile details below are still saved on this device. Signing in keeps your session; profile sync to the backend is not built yet.'}
+            </p>
+          </div>
+        </div>
+      )}
 
       {existing && !isFirstTime && (
         <div className="card">
