@@ -25,9 +25,12 @@ function apyContribution(age, target) {
 }
 
 export default function Calculator() {
-  const [age, setAge] = useState(25)
+  // Prefilled from the logged-in user's own saved profile when it exists —
+  // never from another user's data, and editable here without changing the profile.
+  const saved = (() => { try { return JSON.parse(localStorage.getItem('pensionsaarthi_profile_v1')) } catch { return null } })()
+  const [age, setAge] = useState(saved?.age || 25)
   const [target, setTarget] = useState(5000)
-  const [income, setIncome] = useState(12000)
+  const [income, setIncome] = useState(saved?.monthlyIncome || 12000)
 
   const apy = useMemo(() => apyContribution(age, target), [age, target])
   const pmsym = useMemo(() => Math.round(55 + ((Math.min(Math.max(age, 18), 40) - 18) * 145) / 22), [age])

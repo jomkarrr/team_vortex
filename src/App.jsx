@@ -11,16 +11,21 @@ import Profile from './pages/Profile'
 import VoiceAssistant from './components/VoiceAssistant'
 import { loadProfile } from './lib/storage'
 
-const TABS = [
+// Navigation is deliberately short: 5 core items only.
+// Everything else lives under "More Services" so the bar is never crowded
+// and the user always knows where the 3 core actions are.
+const CORE_TABS = [
   { id: 'home', label: 'Home' },
   { id: 'eligibility', label: 'Find My Pension' },
   { id: 'status', label: 'Track Status' },
   { id: 'help', label: 'Why Did It Stop?' },
-  { id: 'schemes', label: 'Schemes' },
+  { id: 'profile', label: 'My Profile' },
+]
+const MORE_TABS = [
+  { id: 'schemes', label: 'All Schemes' },
   { id: 'calculator', label: 'Calculator' },
   { id: 'reminders', label: 'Reminders' },
   { id: 'helpcentres', label: 'Help & Grievance' },
-  { id: 'profile', label: 'My Profile' },
 ]
 
 export default function App() {
@@ -31,6 +36,7 @@ export default function App() {
   const [page, setPage] = useState(() => (loadProfile() ? 'home' : 'profile'))
   const [skippedProfile, setSkippedProfile] = useState(false)
   const [voiceOpen, setVoiceOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
   const [fontScale, setFontScale] = useState(1)
   const go = (p) => { setPage(p); window.scrollTo({ top: 0 }) }
 
@@ -61,11 +67,29 @@ export default function App() {
 
       <nav className="nav">
         <div className="nav-inner">
-          {TABS.map((t) => (
+          {CORE_TABS.map((t) => (
             <button key={t.id} className={page === t.id ? 'nav-btn active' : 'nav-btn'} onClick={() => go(t.id)}>
               {t.label}{t.id === 'profile' && savedProfile ? ' ✓' : ''}
             </button>
           ))}
+          <div className="nav-dropdown">
+            <button
+              className={MORE_TABS.some((t) => t.id === page) ? 'nav-btn active' : 'nav-btn'}
+              aria-expanded={moreOpen}
+              onClick={() => setMoreOpen((o) => !o)}
+            >
+              More Services {moreOpen ? '▴' : '▾'}
+            </button>
+            {moreOpen && (
+              <div className="dropdown-menu">
+                {MORE_TABS.map((t) => (
+                  <button key={t.id} className="dropdown-item" onClick={() => { setMoreOpen(false); go(t.id) }}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 

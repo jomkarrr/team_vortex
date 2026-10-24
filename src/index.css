@@ -28,6 +28,10 @@ a{color:var(--blue)}
 .nav-btn{background:transparent;border:none;color:#d6e6f2;padding:13px 15px;font-size:15px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}
 .nav-btn:hover{color:#fff}
 .nav-btn.active{color:#fff;border-bottom-color:var(--accent)}
+.nav-dropdown{position:relative}
+.dropdown-menu{position:absolute;top:100%;left:0;z-index:30;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 28px rgba(10,37,64,.18);padding:6px;min-width:210px}
+.dropdown-item{display:block;width:100%;text-align:left;background:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:15px;font-weight:600;color:var(--navy);cursor:pointer}
+.dropdown-item:hover{background:var(--blue-light)}
 .main{max-width:1180px;width:100%;margin:0 auto;padding:0 20px 48px;flex:1}
 /* Hero */
 .hero{background:linear-gradient(120deg,var(--navy) 0%,var(--navy2) 55%,#1160a3 100%);color:#fff;border-radius:0 0 20px 20px;margin:0 -20px 28px;padding:44px 28px 36px}

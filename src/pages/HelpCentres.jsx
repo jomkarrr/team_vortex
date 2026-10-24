@@ -48,7 +48,7 @@ Note: Submit this at the Gram / Ward Sachivalayam, District Social Welfare Offic
             {GRIEVANCE_ISSUES.map((i) => <option key={i}>{i}</option>)}
           </select>
         </label>
-        <label>Your full name<input value={name} onChange={(e) => setName(e.target.value)} placeholder="Example: Ramulamma" /></label>
+        <label>Your full name<input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your full name" /></label>
         <label>Application / PPO number<input value={appNo} onChange={(e) => setAppNo(e.target.value)} placeholder="Example: APP-2026-1001" /></label>
         <textarea rows={12} readOnly value={letter} style={{ width: '100%' }} />
         <button className="btn primary" onClick={copyLetter}>{copied ? 'Copied ✓' : 'Copy letter'}</button>

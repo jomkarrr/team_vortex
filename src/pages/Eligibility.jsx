@@ -58,7 +58,7 @@ export default function Eligibility({ go }) {
         <p className="hero-sub">No profile saved yet. Fill the form below, or set up My Profile once from the navbar and never fill it again.</p>
       )}
       <div className="card form-card">
-        <label>Full name<input value={form.name} onChange={(e) => set('name', e.target.value)} placeholder="Example: Ramulamma" /></label>
+        <label>Full name<input value={form.name} onChange={(e) => set('name', e.target.value)} placeholder="Your full name" /></label>
         <label>Age (years)<input type="number" min="0" max="120" value={form.age} onChange={(e) => set('age', Number(e.target.value))} /></label>
         <label>State
           <select value={form.state} onChange={(e) => set('state', e.target.value)}>

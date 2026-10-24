@@ -5,6 +5,12 @@
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
 
+## My Profile, bilingual voice, and per-user status (latest)
+
+- **Voice Assistant is bilingual (English + Hindi):** pick a language in the voice panel and both listening and spoken answers switch to it (en-IN / hi-IN), including Hindi keywords in Roman and Devanagari. Profile voice setup is bilingual too, including Hindi number words.
+- **Navigation is decluttered:** navbar shows only Home, Find My Pension, Track Status, Why Did It Stop?, My Profile — Schemes, Calculator, Reminders and Help & Grievance live under "More Services". The home page groups services into Core Services / Profile & Planning Tools / Explore & Get Help instead of one crowded grid.
+- **Track Status is per-user only:** the old shared demo-persona list is removed. Status is built from the logged-in user's own saved profile on that device (one application number, created once and kept when the name is edited) and deleting the profile deletes its application too. No other user's details ever appear. Schemes remain a reference catalogue, not user data.
+
 ## My Profile (fill once, use everywhere)
 
 On first visit the site opens at **My Profile** in the navbar. Fill it once — by hand, or by
