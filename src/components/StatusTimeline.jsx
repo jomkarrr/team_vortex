@@ -7,12 +7,12 @@ export default function StatusTimeline({ application }) {
   return (
     <div className="card">
       <div className="scheme-name">{application.schemeName}</div>
-      <div className="scheme-meta">Application No: {application.id} · Apply kiya: {application.appliedOn}</div>
+      <div className="scheme-meta">Application No: {application.id} · Applied on: {application.appliedOn}</div>
 
       <div className={`status-banner ${failed ? 'bad' : ''}`}>
-        Abhi ki sthiti: <strong>{application.currentStatus}</strong>
+        Current status: <strong>{application.currentStatus}</strong>
       </div>
-      {application.problem && <p className="note"><strong>Dhyaan dein:</strong> {application.problem}</p>}
+      {application.problem && <p className="note"><strong>Please note:</strong> {application.problem}</p>}
 
       <div className="timeline">
         {application.events.map((e, i) => (
@@ -25,7 +25,7 @@ export default function StatusTimeline({ application }) {
           </div>
         ))}
         {!failed && application.currentStatus !== 'Credited' && (
-          <p className="note dim">Aage ke steps: {STEPS.slice(STEPS.indexOf(application.currentStatus) + 1).join(' → ') || '—'}</p>
+          <p className="note dim">Next steps: {STEPS.slice(STEPS.indexOf(application.currentStatus) + 1).join(' → ') || '—'}</p>
         )}
       </div>
     </div>

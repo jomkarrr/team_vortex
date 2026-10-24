@@ -24,49 +24,49 @@ export default function Eligibility() {
     const eligible = results.filter((r) => r.status === 'eligible')
     return (
       <div>
-        <h2 className="page-title">{form.name || 'Aap'} ke liye pension</h2>
+        <h2 className="page-title">Pensions for {form.name || 'you'}</h2>
         <p className="hero-sub">
           {eligible.length > 0
-            ? `${eligible.length} pension aapke liye banti hai. Neeche har ek ki wajah aur documents diye hain.`
-            : 'Abhi koi pension pakki nahi banti — neeche dekho kya bacha hai, "Bas ek cheez bachi hai" wali sabse pehle puri karo.'}
+            ? `${eligible.length} pension(s) qualify for you. Below, each one shows its reason and its document checklist.`
+            : 'No pension fully qualifies yet — look at "One thing remaining" first; that is the fastest one to complete.'}
         </p>
         {results.filter((r) => r.status !== 'info' || r.passed.length > 0).map((r) => (
           <SchemeCard key={r.scheme.id} result={r} />
         ))}
-        <button className="btn ghost" onClick={() => setResults(null)}>Jaankari badlo</button>
-        <p className="disclaimer">Ye "likely eligible" hai — aakhri faisla sarkari adhikari ka hota hai. Hum kabhi guarantee nahi dete.</p>
+        <button className="btn ghost" onClick={() => setResults(null)}>Change details</button>
+        <p className="disclaimer">This is "likely eligible" — the final decision is the government officer's. We never guarantee a pension.</p>
       </div>
     )
   }
 
   return (
     <div>
-      <h2 className="page-title">6 aasan sawal</h2>
-      <p className="hero-sub">Jiske liye pension dekh rahe hain, unki jaankari bharo. Galat ho to baad me badal sakte ho.</p>
+      <h2 className="page-title">Find My Pension — 6 simple questions</h2>
+      <p className="hero-sub">Enter the details of the person the pension is for. You can change them later; your answers are saved on this device only.</p>
       <div className="card form-card">
-        <label>Naam<input value={form.name} onChange={(e) => set('name', e.target.value)} placeholder="Jaise: Ramulamma" /></label>
-        <label>Umar (saal)<input type="number" min="0" max="120" value={form.age} onChange={(e) => set('age', Number(e.target.value))} /></label>
+        <label>Full name<input value={form.name} onChange={(e) => set('name', e.target.value)} placeholder="Example: Ramulamma" /></label>
+        <label>Age (years)<input type="number" min="0" max="120" value={form.age} onChange={(e) => set('age', Number(e.target.value))} /></label>
         <label>State
           <select value={form.state} onChange={(e) => set('state', e.target.value)}>
             <option>Andhra Pradesh</option><option>Telangana</option><option>Maharashtra</option>
             <option>Karnataka</option><option>Tamil Nadu</option><option>Other</option>
           </select>
         </label>
-        <label className="check"><input type="checkbox" checked={form.isBPL} onChange={(e) => set('isBPL', e.target.checked)} /> Ghar pe BPL / rice (ration) card hai</label>
-        <label className="check"><input type="checkbox" checked={form.isWidow} onChange={(e) => set('isWidow', e.target.checked)} /> Vidva / vidur hain (pati / patni ka dehant ho chuka hai)</label>
-        <label>Divyangta % (na ho to 0)<input type="number" min="0" max="100" value={form.disabilityPercent} onChange={(e) => set('disabilityPercent', Number(e.target.value))} /></label>
-        <label>Kaam ka type
+        <label className="check"><input type="checkbox" checked={form.isBPL} onChange={(e) => set('isBPL', e.target.checked)} /> Household has a BPL / rice (ration) card</label>
+        <label className="check"><input type="checkbox" checked={form.isWidow} onChange={(e) => set('isWidow', e.target.checked)} /> Widow / widower (spouse has died)</label>
+        <label>Disability % (enter 0 if none)<input type="number" min="0" max="100" value={form.disabilityPercent} onChange={(e) => set('disabilityPercent', Number(e.target.value))} /></label>
+        <label>Type of work
           <select value={form.workerType} onChange={(e) => set('workerType', e.target.value)}>
-            <option value="none">Koi kaam nahi / purana kaam chhod diya</option>
-            <option value="unorganised">Asangathit kaam (mazdoori, kheti, dukaan, thela, ghar kaam)</option>
-            <option value="formal">Sarkari / company ki naukri thi (EPFO / PF wala)</option>
+            <option value="none">No work now / stopped working</option>
+            <option value="unorganised">Unorganised work (daily wage, farming, shop, street vending, domestic work)</option>
+            <option value="formal">Government / company job (EPFO / PF covered)</option>
           </select>
         </label>
-        <label>Khud ki mahine ki aamdani (₹)<input type="number" min="0" value={form.monthlyIncome} onChange={(e) => set('monthlyIncome', Number(e.target.value))} /></label>
-        <label className="check"><input type="checkbox" checked={form.isTaxpayer} onChange={(e) => set('isTaxpayer', e.target.checked)} /> Income tax dete hain</label>
-        <label className="check"><input type="checkbox" checked={form.receivingPension} onChange={(e) => set('receivingPension', e.target.checked)} /> Pehle se koi pension mil rahi hai</label>
-        <label className="check"><input type="checkbox" checked={form.breadwinnerDeath} onChange={(e) => set('breadwinnerDeath', e.target.checked)} /> Ghar ke mukhya kamane wale ka dehant hua hai (umar 18–59 thi)</label>
-        <button className="btn primary big" onClick={submit}>Meri Pension Dekho</button>
+        <label>Own monthly income (₹)<input type="number" min="0" value={form.monthlyIncome} onChange={(e) => set('monthlyIncome', Number(e.target.value))} /></label>
+        <label className="check"><input type="checkbox" checked={form.isTaxpayer} onChange={(e) => set('isTaxpayer', e.target.checked)} /> Pays income tax</label>
+        <label className="check"><input type="checkbox" checked={form.receivingPension} onChange={(e) => set('receivingPension', e.target.checked)} /> Already receiving some pension</label>
+        <label className="check"><input type="checkbox" checked={form.breadwinnerDeath} onChange={(e) => set('breadwinnerDeath', e.target.checked)} /> Main earning member of the family died (aged 18–59)</label>
+        <button className="btn primary big" onClick={submit}>Show My Pensions</button>
       </div>
     </div>
   )

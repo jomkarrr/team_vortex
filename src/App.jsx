@@ -4,51 +4,100 @@ import Eligibility from './pages/Eligibility'
 import Status from './pages/Status'
 import Troubleshooter from './pages/Troubleshooter'
 import Schemes from './pages/Schemes'
+import Calculator from './pages/Calculator'
+import Reminders from './pages/Reminders'
+import HelpCentres from './pages/HelpCentres'
+import VoiceAssistant from './components/VoiceAssistant'
 import { isBackendConnected } from './services/supabaseClient'
 
 const TABS = [
   { id: 'home', label: 'Home' },
-  { id: 'eligibility', label: 'Pension Dhundo' },
-  { id: 'status', label: 'Status' },
-  { id: 'help', label: 'Band Kyun Hua?' },
-  { id: 'schemes', label: 'Yojanayein' },
+  { id: 'eligibility', label: 'Find My Pension' },
+  { id: 'status', label: 'Track Status' },
+  { id: 'help', label: 'Why Did It Stop?' },
+  { id: 'schemes', label: 'Schemes' },
+  { id: 'calculator', label: 'Calculator' },
+  { id: 'reminders', label: 'Reminders' },
+  { id: 'helpcentres', label: 'Help & Grievance' },
 ]
 
 export default function App() {
   const [page, setPage] = useState('home')
+  const [voiceOpen, setVoiceOpen] = useState(false)
+  const [fontScale, setFontScale] = useState(1)
   const go = (p) => { setPage(p); window.scrollTo({ top: 0 }) }
 
+  const cycleFont = () => setFontScale((s) => (s >= 1.2 ? 1 : s + 0.1))
+
   return (
-    <div className="app">
-      <header className="header">
-        <div className="brand" onClick={() => go('home')}>
-          <span className="brand-name">PensionSaarthi</span>
-          <span className="brand-tag">Team VORTEX · IMPACTX 2026 · Topic 20</span>
+    <div className="app" style={{ fontSize: `${16.5 * fontScale}px` }}>
+      <div className="topbar">
+        <div className="topbar-inner">
+          <span>IMPACTX 2026 · Team VORTEX · Student Prototype — Not a Government Website</span>
+          <span><a href="https://web.umang.gov.in/landing/" target="_blank" rel="noreferrer">UMANG (reference) ↗</a> · <a href="https://nsap.nic.in" target="_blank" rel="noreferrer">NSAP ↗</a></span>
         </div>
-        <span className="backend-pill" title="Backend connection status">
-          {isBackendConnected ? 'Backend: Supabase connected' : 'Backend: Demo mode (offline-ready)'}
-        </span>
+      </div>
+
+      <header className="header">
+        <div className="header-inner">
+          <div className="brand" onClick={() => go('home')}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <span className="logo-mark">P</span>
+              <span>
+                <span className="brand-name">Pension<span>Saarthi</span></span>
+                <br /><span className="brand-tag">Pensions & Social Benefits · Topic 20 · VIT-AP</span>
+              </span>
+            </div>
+          </div>
+          <div className="header-actions">
+            <button className="font-btn" onClick={cycleFont} title="Increase text size for easier reading">A+ Text Size</button>
+            <button className={`voice-btn ${voiceOpen ? 'active' : ''}`} onClick={() => setVoiceOpen(!voiceOpen)}>
+              🎙 Voice Assistant
+            </button>
+            <span className="backend-pill">{isBackendConnected ? 'Backend: Supabase connected' : 'Backend: Demo mode (works offline)'}</span>
+          </div>
+        </div>
       </header>
 
       <nav className="nav">
-        {TABS.map((t) => (
-          <button key={t.id} className={page === t.id ? 'nav-btn active' : 'nav-btn'} onClick={() => go(t.id)}>
-            {t.label}
-          </button>
-        ))}
+        <div className="nav-inner">
+          {TABS.map((t) => (
+            <button key={t.id} className={page === t.id ? 'nav-btn active' : 'nav-btn'} onClick={() => go(t.id)}>
+              {t.label}
+            </button>
+          ))}
+        </div>
       </nav>
 
       <main className="main">
-        {page === 'home' && <Home go={go} />}
+        {page === 'home' && <Home go={go} onVoice={() => setVoiceOpen(true)} />}
         {page === 'eligibility' && <Eligibility />}
         {page === 'status' && <Status go={go} />}
         {page === 'help' && <Troubleshooter />}
         {page === 'schemes' && <Schemes />}
+        {page === 'calculator' && <Calculator />}
+        {page === 'reminders' && <Reminders />}
+        {page === 'helpcentres' && <HelpCentres />}
       </main>
 
+      <VoiceAssistant go={go} open={voiceOpen} setOpen={setVoiceOpen} />
+
       <footer className="footer">
-        PensionSaarthi — ek prototype hai. Sarkari jaankari ke liye hamesha nsap.nic.in,
-        jeevanpramaan.gov.in ya apne Gram/Ward Sachivalayam se confirm karein.
+        <div className="footer-inner">
+          <div>
+            <h4>PensionSaarthi</h4>
+            <p>Know which pension you qualify for, track where it has reached, and fix it when it stops — with reasons, not just "pending". Built for pensioners, family helpers and CSC operators.</p>
+          </div>
+          <div>
+            <h4>Services</h4>
+            <p><button onClick={() => go('eligibility')}>Find My Pension</button><br /><button onClick={() => go('status')}>Track Status</button><br /><button onClick={() => go('help')}>Why Did It Stop?</button><br /><button onClick={() => go('calculator')}>Pension Calculator</button></p>
+          </div>
+          <div>
+            <h4>Official sources</h4>
+            <p>NSAP (nsap.nic.in) · Jeevan Pramaan (jeevanpramaan.gov.in) · UMANG · NTR Bharosa (AP) · EPFO · PFRDA (APY). This prototype is not affiliated with the government.</p>
+          </div>
+        </div>
+        <div className="footer-bottom">Team VORTEX · IMPACTX 2026 · VIT-AP · Topic 20: Pensions and Social Benefits · Prototype — eligibility shown is "likely eligible"; final sanction is the government officer's decision.</div>
       </footer>
     </div>
   )

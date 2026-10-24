@@ -5,8 +5,8 @@ export default function Troubleshooter() {
   const [openId, setOpenId] = useState(ISSUES[0].id)
   return (
     <div>
-      <h2 className="page-title">Pension Band Kyun Hua?</h2>
-      <p className="hero-sub">Apni dikkat chuno. Hum batayenge wajah kya hai aur theek karne ka pura tareeka — bina office ke chakkar kaate, pehle ghar pe samajh lo.</p>
+      <h2 className="page-title">Why Did My Pension Stop?</h2>
+      <p className="hero-sub">Choose your problem. We explain the likely reason and the full recovery process — so you understand it at home before visiting any office.</p>
       {ISSUES.map((issue) => {
         const open = openId === issue.id
         return (
@@ -17,11 +17,11 @@ export default function Troubleshooter() {
             <p className="note">{issue.symptom}</p>
             {open && (
               <div className="docs">
-                <p><strong>Wajah:</strong> {issue.why}</p>
-                <div className="docs-title">Theek karne ke steps:</div>
-                <ol className="steps">{issue.steps.map((s) => <li key={s}>{s}</li>)}</ol>
-                <p className="note"><strong>Kagaz:</strong> {issue.documents.join(' · ')}</p>
-                <p className="note"><strong>Kahan jayein:</strong> {issue.where}</p>
+                <p><strong>Why it happens:</strong> {issue.why}</p>
+                <div className="docs-title">Steps to fix it:</div>
+                <ol className="steps-list">{issue.steps.map((s) => <li key={s}>{s}</li>)}</ol>
+                <p className="note"><strong>Documents:</strong> {issue.documents.join(' · ')}</p>
+                <p className="note"><strong>Where to go:</strong> {issue.where}</p>
                 <p className="warning">⚠ {issue.warning}</p>
               </div>
             )}

@@ -12,8 +12,8 @@ export default function Status({ go }) {
 
   return (
     <div>
-      <h2 className="page-title">Meri Pension Ka Status</h2>
-      <p className="hero-sub">Neeche teen demo case hain (asli app me ye aapke application number se khulega). Ek chuno aur dekho paisa kahan tak pahuncha hai.</p>
+      <h2 className="page-title">Track Pension Status</h2>
+      <p className="hero-sub">Below are three demo cases (in the real app this opens with your application number). Choose one to see where the pension has reached.</p>
       <div className="persona-row">
         {apps.map((a) => (
           <button key={a.personaId} className={`persona ${selected === a.personaId ? 'active' : ''}`} onClick={() => setSelected(a.personaId)}>
@@ -25,13 +25,13 @@ export default function Status({ go }) {
         <>
           <StatusTimeline application={current.application} />
           {current.application.currentStatus === 'Failed' && (
-            <button className="btn primary" onClick={() => go('help')}>Is dikkat ka fix dekho →</button>
+            <button className="btn primary" onClick={() => go('help')}>See how to fix this →</button>
           )}
         </>
       ) : (
-        <p className="note">Upar se ek case chuno.</p>
+        <p className="note">Choose a case above.</p>
       )}
-      <p className="disclaimer">Prototype me status demo data se aata hai. Asli version me yahi screen Supabase / UMANG-DBT status se judegi — screen nahi badlegi, sirf data ka source badlega.</p>
+      <p className="disclaimer">In this prototype, status comes from demo data. In production, this same screen connects to a Supabase / UMANG–DBT status feed — the screen does not change, only the data source does.</p>
     </div>
   )
 }

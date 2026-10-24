@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { getChecklist, setChecklistItem } from '../lib/storage'
 
 const LABEL = {
-  eligible: { text: 'Aapke liye banti hai', cls: 'badge ok' },
-  almost: { text: 'Bas ek cheez bachi hai', cls: 'badge warn' },
-  not: { text: 'Abhi nahi banti', cls: 'badge no' },
-  info: { text: 'Jaankari ke liye', cls: 'badge info' },
+  eligible: { text: 'You qualify', cls: 'badge ok' },
+  almost: { text: 'One thing remaining', cls: 'badge warn' },
+  not: { text: 'Does not qualify yet', cls: 'badge no' },
+  info: { text: 'For information', cls: 'badge info' },
 }
 
 export default function SchemeCard({ result }) {
@@ -30,7 +30,7 @@ export default function SchemeCard({ result }) {
       </div>
 
       {amount > 0 && (
-        <div className="amount">₹{amount.toLocaleString('en-IN')}<span className="per"> / mahina{ scheme.id === 'nfbs' ? ' nahi — ek baar' : ''}</span></div>
+        <div className="amount">₹{amount.toLocaleString('en-IN')}<span className="per"> / month{scheme.id === 'nfbs' ? ' — one-time, not monthly' : ''}</span></div>
       )}
       <p className="note">{scheme.amountNote}</p>
 
@@ -42,19 +42,19 @@ export default function SchemeCard({ result }) {
       )}
 
       <button className="btn small ghost" onClick={() => setOpen(!open)}>
-        {open ? 'Documents band karo' : 'Documents ki list dekho'}
+        {open ? 'Hide documents' : 'View document checklist'}
       </button>
 
       {open && (
         <div className="docs">
-          <div className="docs-title">Ye kagaz chahiye — jo hai uspe tick karo:</div>
+          <div className="docs-title">Documents required — tick the ones you already have:</div>
           {scheme.documents.map((doc) => (
             <label key={doc} className="doc-row">
               <input type="checkbox" checked={checked.includes(doc)} onChange={() => toggleDoc(doc)} />
               <span>{doc}</span>
             </label>
           ))}
-          <p className="note"><strong>Kahan apply karein:</strong> {scheme.applyWhere}</p>
+          <p className="note"><strong>Where to apply:</strong> {scheme.applyWhere}</p>
           <p className="note dim">Source: {scheme.source}</p>
         </div>
       )}

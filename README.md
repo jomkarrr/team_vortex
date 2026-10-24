@@ -5,6 +5,16 @@
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
 
+## UI v2 (professional, English, UMANG-inspired)
+
+The interface was rebuilt in English with a professional government-portal layout:
+navy top strip, white header with logo, sticky blue navbar, hero with service search,
+stats strip, and a full services grid. A **separate Voice Assistant for Citizens**
+(floating button + header button) speaks answers aloud and accepts voice commands
+or tap commands — it never asks for Aadhaar, OTP or passwords. Add-on services:
+Pension Calculator (APY / PM-SYM), Life Certificate Reminders, Help Centres directory,
+Grievance Letter Generator, and FAQs — all in English, all working in the prototype.
+
 PensionSaarthi is a working prototype that does three things no single portal does today:
 
 1. **Meri Pension Dhundo** — Answer 6 simple questions and get every pension you
