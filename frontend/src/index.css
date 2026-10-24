@@ -90,7 +90,7 @@ a{color:var(--blue)}
 .doc-row{display:flex;gap:10px;align-items:center;padding:8px 0;font-size:16px;cursor:pointer}
 .doc-row input{width:22px;height:22px;accent-color:var(--blue)}
 .form-card label{display:block;font-weight:600;margin:14px 0;font-size:16px}
-.form-card input[type="text"],.form-card input:not([type]),.form-card input[type="number"],.form-card input[type="date"],.form-card select,.form-card textarea{display:block;width:100%;margin-top:6px;font-size:16px;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);min-height:50px;font-family:inherit}
+.form-card input[type="text"],.form-card input[type="email"],.form-card input:not([type]),.form-card input[type="number"],.form-card input[type="date"],.form-card select,.form-card textarea{display:block;width:100%;margin-top:6px;font-size:16px;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);min-height:50px;font-family:inherit}
 .form-card label.check{display:flex;gap:10px;align-items:center;font-weight:500;cursor:pointer}
 .form-card label.check input{width:22px;height:22px;accent-color:var(--blue);flex:none}
 .status-banner{margin:14px 0;padding:12px 16px;border-radius:12px;background:#dcfce7;font-size:17px}
