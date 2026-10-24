@@ -181,6 +181,7 @@ export default function App() {
             {page === 'helpcentres' && <HelpCentres />}
             {page === 'profile' && (
               <Profile
+                authUser={user}
                 isFirstTime={isFirstTime}
                 onSaved={(p) => { setSavedProfile(p); if (isFirstTime) go('home') }}
                 onSkip={isFirstTime ? () => { setSkippedProfile(true); go('home') } : null}

@@ -270,3 +270,10 @@ body{
 .login-email-box .form-card input[type="email"]:focus{outline:none;box-shadow:none}
 .login-email-btn{min-height:56px;font-size:18px;margin-top:14px}
 .login-email-note{margin-top:10px}
+
+/* GOOGLE PROFILE PRE-FILL (added 2026-10-25 — My Profile banner only)
+   Existing navy/blue palette + Poppins only. Avatar is the Google account
+   photo from the Supabase session; it is shown, never stored as a profile
+   field, and no Aadhaar/OTP/bank data is involved. */
+.profile-auth-banner{display:flex;gap:12px;align-items:center}
+.profile-auth-avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #D6E9F8}
