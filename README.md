@@ -2,6 +2,26 @@
 
 **Pensions and Social Benefits**
 
+## Folder structure — frontend / backend are separate (read this before editing)
+
+```
+team_vortex/
+├── frontend/               # Member B (Frontend) — the whole website (React + Vite)
+│   ├── README.md           # Member B workflow: run, own, do-not-touch, merge checklist
+│   ├── index.html, package.json, vite.config.js
+│   └── src/                # pages, components, lib, services, data
+├── backend/                # Member A (Backend) — Supabase only, no UI
+│   ├── README.md           # Member A workflow: setup, RLS, migrations, secrets
+│   ├── supabase/           # schema.sql, seed.sql, migrations/
+│   └── functions/          # Edge Functions (pincode draft, more planned)
+├── docs/DEMO_SCRIPT.md
+├── ARCHITECTURE.md
+├── CODEOWNERS              # replace @member-a / @member-b with real GitHub usernames
+└── vercel.json             # builds frontend/ -> frontend/dist (do not move package.json to root)
+```
+
+**Ownership rule:** Member A edits only `backend/` (+ shared contracts with Member B's OK). Member B edits only `frontend/` (+ shared contracts with Member A's OK). Shared contracts are listed in `frontend/README.md` §3 and `backend/README.md` §3 — eligibility return shape, per-user status interface, schemes data, profile fields. `git status` before every merge must show only your own folder (+ shared files only with the other member's OK).
+
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
 
@@ -9,23 +29,23 @@
 
 Deploy target is Vercel, not GitHub Pages.
 
-1. Fix already done in this repo: `vite.config.js` sets `base: '/'` because
+1. Fix already done in this repo: `frontend/vite.config.js` sets `base: '/'` because
    Vercel serves the site from the domain root. (Do NOT set it back to
    `/team_vortex/` — that was for GitHub Pages and breaks Vercel with a
    blank page.)
-2. On vercel.com, log in with GitHub, Add New > Project, import
-   `jomkarrr/team_vortex`.
-3. Settings: Framework Vite, Build Command `npm run build`, Output Directory
-   `dist`, Install Command `npm install`. No environment variables are
-   required — without Supabase vars the app runs in demo mode with
-   localStorage profiles (see `.env.example` for the optional backend).
+2. Root `vercel.json` now builds the frontend folder: Install `cd frontend && npm install`, Build `cd frontend && npm run build`, Output `frontend/dist`. No Vercel dashboard Root Directory change is needed for this — but after pushing this restructure, check the next Vercel deploy before assuming it worked (see the migration note in the chat). If Vercel is ever set to a Root Directory, it must be `frontend/` with Build `npm run build` and Output `dist` — never both a root `vercel.json` delegation and a dashboard root override at once.
+3. On vercel.com, log in with GitHub, Add New > Project, import
+   `jomkarrr/team_vortex`. Settings come from root `vercel.json` (see step 2).
+   No environment variables are required — without Supabase vars the app runs
+   in demo mode with localStorage profiles (see `frontend/.env.example` for the
+   optional backend).
 4. Click Deploy. Every later push to `main` redeploys automatically.
    The app uses in-page navigation only, so no URL rewrites are needed.
 
 ## UMANG audit theme + animations (latest)
 
 Read-only audit of web.umang.gov.in/landing/ (v-21.2.38): no sign-in/submission/download.
-Findings applied, with limits stated honestly in `src/index.css`:
+Findings applied, with limits stated honestly in `frontend/src/index.css`:
 - **Font:** exact UMANG font name could NOT be verified (no DevTools access in audit).
   Audit found a single clean, slightly rounded sans, geometric headings, similar in
   style to Poppins/Nunito — so **Poppins** is used as the closest match, with
@@ -54,7 +74,7 @@ Findings applied, with limits stated honestly in `src/index.css`:
 
 ## Voice assistant training (latest)
 
-The assistant is trained on **every navigation button by name** in `src/lib/voiceIntents.js`:
+The assistant is trained on **every navigation button by name** in `frontend/src/lib/voiceIntents.js`:
 Home, My Profile, Find My Pension, Track Status, Why Did My Pension Stop?, All Schemes,
 Calculator, Reminders, Help & Grievance, plus More Services and Bigger Text — each with
 English, Roman Hindi and Devanagari Hindi aliases. Matching is scored, longest phrase
@@ -129,7 +149,7 @@ npm run build      # production build (verified)
 No backend needed to run: the prototype works on seeded demo data + localStorage
 (offline-first — pensions users often have weak connectivity).
 To connect the real backend, create a free Supabase project, run
-`supabase/schema.sql` then `supabase/seed.sql`, and fill `.env` from `.env.example`.
+`backend/supabase/schema.sql` then `backend/supabase/seed.sql`, and fill `frontend/.env` from `frontend/.env.example`.
 
 ## Demo (4 minutes, 3 personas)
 

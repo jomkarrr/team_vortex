@@ -1,0 +1,23 @@
+# CODEOWNERS — who must review what (GitHub)
+# IMPORTANT: replace @member-a and @member-b with the real GitHub usernames
+# of Member A (Backend) and Member B (Frontend) before relying on this file.
+# Until then, the rule is the same by hand: do not merge your own change to
+# the other member's folder without their OK (see frontend/README.md and
+# backend/README.md).
+
+# Frontend — Member B
+/frontend/ @member-b
+
+# Backend — Member A
+/backend/ @member-a
+
+# Shared contracts — BOTH members must review
+/frontend/src/lib/eligibility.js @member-a @member-b
+/frontend/src/lib/statusService.js @member-a @member-b
+/frontend/src/data/schemes.js @member-a @member-b
+/frontend/src/services/supabaseClient.js @member-a @member-b
+/backend/supabase/ @member-a @member-b
+
+# Repo-level deploy + workflow — both members
+/vercel.json @member-a @member-b
+/README.md @member-a @member-b

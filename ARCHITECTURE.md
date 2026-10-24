@@ -4,47 +4,41 @@
 
 ```
 team_vortex/
-├── index.html                  # entry HTML, title/meta
-├── package.json                # React 18 + Vite 5 + @supabase/supabase-js
-├── vite.config.js
-├── .env.example                # VITE_SUPABASE_URL / ANON_KEY (optional)
-│
-├── src/
-│   ├── main.jsx                # React root
-│   ├── App.jsx                 # shell: header, nav, page switch, backend pill
-│   ├── index.css               # elderly-first design system (big type, big targets)
-│   │
-│   ├── data/                   # <-- ALL researched content lives here.
-│   │   │                          Adding a scheme or a fix = edit a data file only.
-│   │   ├── schemes.js          # 11 schemes, declarative rules + documents + source
-│   │   ├── troubleshooter.js   # 5 diagnosis flows (why -> steps -> docs -> where -> warning)
-│   │   └── demoPersonas.js     # 3 demo personas + their seeded applications/status
-│   │
-│   ├── lib/                    # pure logic, no UI, no network
-│   │   ├── eligibility.js      # rule engine: profile -> eligible/almost/not/info + reasons
-│   │   ├── statusService.js    # ONLY module that knows where status data comes from
-│   │   └── storage.js          # offline-first localStorage: profile + checklists
-│   │
-│   ├── services/
-│   │   └── supabaseClient.js   # optional backend client; null when env is empty
-│   │
-│   ├── components/             # reusable UI blocks
-│   │   ├── SchemeCard.jsx      # result card: badge, amount, reasons, document checklist
-│   │   └── StatusTimeline.jsx  # status events timeline + problem banner
-│   │
-│   └── pages/                  # one file per route/screen
-│       ├── Home.jsx            # 3 modules + Family Helper Mode + disclaimer
-│       ├── Eligibility.jsx     # 6-question form -> evaluateProfile -> SchemeCards
-│       ├── Status.jsx          # pick an application -> StatusTimeline (+ fix CTA)
-│       ├── Troubleshooter.jsx  # "Pension Band Kyun Hua?" accordion of the 5 flows
-│       └── Schemes.jsx         # browse all schemes with real rules/amounts
-│
-├── supabase/
-│   ├── schema.sql              # schemes, profiles, helper_links, applications,
-│   │                           # application_status_events, checklists, sessions
-│   └── seed.sql                # same 3 personas, so SQL mode == local mode
-│
-├── docs/                       # (team docs / PPT source material lives here)
+├── frontend/                   # Member B — website (React 18 + Vite 5)
+│   ├── README.md               # Member B workflow
+│   ├── index.html              # entry HTML, title/meta
+│   ├── package.json            # React, Vite, framer-motion, @supabase/supabase-js (client)
+│   ├── vite.config.js          # base '/' for Vercel
+│   ├── .env.example            # VITE_SUPABASE_URL / ANON_KEY (optional)
+│   └── src/
+│       ├── main.jsx            # React root
+│       ├── App.jsx             # shell: header, nav, page switch
+│       ├── index.css           # elderly-first design system (big type, big targets)
+│       ├── data/               # ALL researched content lives here
+│       │   ├── schemes.js      # 11 schemes, declarative rules + documents + source
+│       │   ├── troubleshooter.js # 5 diagnosis flows
+│       │   └── demoPersonas.js # REMOVED note only — per-user status replaced demo personas
+│       ├── lib/                # pure logic, no UI, no network
+│       │   ├── eligibility.js  # rule engine (SHARED CONTRACT with backend)
+│       │   ├── statusService.js# ONLY module that knows where status data comes from
+│       │   └── storage.js      # offline-first localStorage: profile + checklists
+│       ├── services/
+│       │   └── supabaseClient.js # optional backend client; null when env is empty
+│       ├── components/         # SchemeCard, StatusTimeline, VoiceAssistant
+│       └── pages/              # Home, Profile, Eligibility, Status, Troubleshooter,
+│                               # Schemes, Calculator, Reminders, HelpCentres
+├── backend/                    # Member A — Supabase only, no UI
+│   ├── README.md               # Member A workflow
+│   ├── supabase/
+│   │   ├── schema.sql          # schemes, profiles, helper_links, applications,
+│   │   │                       # application_status_events, checklists, sessions
+│   │   ├── seed.sql            # seed data mirroring frontend schemes
+│   │   └── migrations/         # later changes, one file per change (never edit schema.sql after apply)
+│   └── functions/
+│       └── pincode/            # pincode -> district/state (draft, not deployed yet)
+├── docs/                       # demo script + team docs
+├── CODEOWNERS                  # frontend -> Member B, backend -> Member A
+├── vercel.json                 # builds frontend/ -> frontend/dist
 └── README.md
 ```
 
@@ -69,7 +63,7 @@ Why Supabase and not a custom server: in 24 hours a custom Node server costs
 4–5 hours of setup + deployment + cold starts at demo time. Supabase gives
 Postgres + REST + auth in under an hour, and the team already knows it.
 
-Tables (see `supabase/schema.sql`):
+Tables (see `backend/supabase/schema.sql`):
 
 | Table | Purpose |
 |---|---|
