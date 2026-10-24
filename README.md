@@ -5,6 +5,16 @@
 > Help people navigate pension and social-benefit services with clearer requirements,
 > status information, and support for common complications.
 
+## Deploy (GitHub Pages)
+
+Live site (once Pages is enabled for the repo): https://jomkarrr.github.io/team_vortex/
+
+Deploy is automatic: `.github/workflows/deploy.yml` builds on every push to `main`
+and deploys with GitHub Pages (Actions). Locally: `npm install && npm run build`
+— `vite.config.js` sets `base: '/team_vortex/'` because a project Pages site is
+served under that path, not the domain root. A `gh-pages` branch with the built
+site is also kept as a fallback Pages source.
+
 ## UMANG audit theme + animations (latest)
 
 Read-only audit of web.umang.gov.in/landing/ (v-21.2.38): no sign-in/submission/download.
